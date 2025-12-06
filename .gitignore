@@ -1,0 +1,29 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+cachewrap
+cachewrap-debug
+!cmd/cachewrap
+
+# Test binary
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Build cache
+.cache-build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+

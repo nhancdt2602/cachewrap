@@ -58,7 +58,7 @@ func main() {
 	}
 
 	if len(cacheRules) == 0 {
-		fmt.Println("No cachewrap annotations found. Add // cachewrap: param1, param2 above functions.")
+		fmt.Println("No cachewrap annotations found")
 		return
 	}
 
@@ -86,14 +86,23 @@ func main() {
 	f, err := os.Create(outputFile)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Warning: Could not save to %s: %v\n", outputFile, err)
-	} else {
-		defer f.Close()
-		// Create new restorer for file output to avoid node duplication
-		fileRestorer := decorator.NewRestorer()
-		if err := fileRestorer.Fprint(f, dstFile); err != nil {
-			fmt.Fprintf(os.Stderr, "Warning: Could not write to %s: %v\n", outputFile, err)
-		} else {
-			fmt.Printf("=== SAVED TO: %s ===\n", outputFile)
-		}
+		os.Exit(1)
 	}
+
+	defer f.Close()
+	// Create new restorer for file output to avoid node duplication
+	fileRestorer := decorator.NewRestorer()
+	if err := fileRestorer.Fprint(f, dstFile); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: Could not write to %s: %v\n", outputFile, err)
+		os.Exit(1)
+	}
+
+	err = instrument.EnableLineDirective(outputFile)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: Could not enable line directive in %s: %v\n", outputFile, err)
+		os.Exit(1)
+	}
+	fmt.Println("=== SAVED TO ===")
+	fmt.Println(outputFile)
+
 }

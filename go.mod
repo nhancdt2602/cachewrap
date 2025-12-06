@@ -1,6 +1,6 @@
 module github.com/nhancdt2602/cachewrap
 
-go 1.24.9
+go 1.23
 
 require github.com/dave/dst v0.27.3
 

@@ -125,13 +125,14 @@ func handleRemix(args []string) error {
 		}
 		f.Close()
 
-		instrumentedFiles = append(instrumentedFiles, tempFile)
-
-		// Debug: print what we instrumented
-		if os.Getenv("CACHEWRAP_DEBUG") != "" {
-			fmt.Fprintf(os.Stderr, "[CACHEWRAP] Instrumented %s -> %s (found %d annotations)\n",
-				goFile, tempFile, len(rules))
+		err = instrument.EnableLineDirective(tempFile)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: Could not enable line directive in %s: %v\n", tempFile, err)
+			instrumentedFiles = append(instrumentedFiles, goFile)
+			continue
 		}
+
+		instrumentedFiles = append(instrumentedFiles, tempFile)
 	}
 
 	newArgs := append(otherArgs, instrumentedFiles...)
