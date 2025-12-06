@@ -1,6 +1,8 @@
 # CacheWrap
 
-Golang annotation-based & compile-time automatic caching wrapper, inspired by Python's `@lru_cache`, Spring Boot's cache annotations and Alibaba `loongsuite`
+Golang annotation-based & compile-time automatic caching wrapper, inspired by Python's `@lru_cache`, Spring Boot's cache annotations and Alibaba `loongsuite`.
+
+For more details, please refer to [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md).
 
 ## Features
 
@@ -12,6 +14,26 @@ Golang annotation-based & compile-time automatic caching wrapper, inspired by Py
 - **Cache Eviction**: Automatic cache invalidation on updates and deletes
 - **Prefix Support**: Namespace isolation for different entities
 - **Named Caches**: Use different cache backends for different data types
+## Installation
+Install `cachewrap` tool:
+```bash
+go install github.com/nhancdt2602/cachewrap/cmd/cachewrap@latest
+```
+
+Check if it is installed correctly:
+```bash
+cachewrap
+```
+
+Install `cachewrap-debug` tool:
+```bash
+go install github.com/nhancdt2602/cachewrap/cmd/cachewrap-debug@latest
+```
+
+Check if it is installed correctly:
+```bash
+cachewrap-debug
+```
 
 ## Quick Start
 
@@ -38,16 +60,11 @@ func (r *Repository) ClearAll() {
 }
 ```
 
-### 2. Build with Automatic Instrumentation
-
-**Using -toolexec**
+### 2. Build your project with `cachewrap` tool
 
 ```bash
-# Build the cachewrap tool
-make build
-
-# Build your app with automatic cache instrumentation
-go build -toolexec="./cachewrap remix" -a -o myapp main.go
+# Build your app with `cachewrap` tool
+go build -toolexec="cachewrap remix" -a -o myapp main.go
 ```
 
 **Debug generated code**
@@ -57,6 +74,12 @@ go build -toolexec="./cachewrap remix" -a -o myapp main.go
 ./cachewrap-debug your_file.go
 
 # Instrumented code saved to .cache-build/instrument/
+```
+
+## Quick Example
+Run built-in example to quickly grasp the behavior of `cachewrap` tool:
+```bash
+make example-basic
 ```
 
 ## Annotation Syntax
